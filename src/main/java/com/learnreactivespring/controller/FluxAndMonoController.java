@@ -12,14 +12,14 @@ public class FluxAndMonoController {
 
     @GetMapping(value = "/flux")
     public Flux<Integer> returnFlux() {
-        return Flux.just(1, 2, 3, 4, 5)
+        return Flux.just(1, 2, 3, 4)
                 .delayElements(Duration.ofSeconds(1))
                 .log();
     }
 
     @GetMapping(value = "/fluxStream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<Integer> returnFluxStream() {
-        return Flux.just(1, 2, 3, 4, 5)
+        return Flux.just(1, 2, 3, 4)
                 .delayElements(Duration.ofSeconds(1))
                 .log();
     }
