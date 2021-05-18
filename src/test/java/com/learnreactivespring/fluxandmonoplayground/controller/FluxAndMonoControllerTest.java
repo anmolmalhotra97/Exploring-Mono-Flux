@@ -39,7 +39,7 @@ public class FluxAndMonoControllerTest {
     }
 
     @Test
-    public void flux_approach2(){
+    public void flux_approach2() {
         webTestClient.get().uri("/flux")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
@@ -73,5 +73,22 @@ public class FluxAndMonoControllerTest {
                 .consumeWith(response -> {
                     assertEquals(expectedIntegerList, response.getResponseBody());
                 });
+    }
+
+    @Test
+    public void fluxStream() {
+        Flux<Long> longStreamFlux = webTestClient.get().uri("/fluxInfiniteStream")
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(Long.class)
+                .getResponseBody();
+
+        StepVerifier.create(longStreamFlux)
+                .expectNext(0L)
+                .expectNext(1L)
+                .expectNext(2L)
+                .thenCancel()
+                .verify();
     }
 }
